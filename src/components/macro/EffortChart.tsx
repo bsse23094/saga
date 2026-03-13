@@ -10,8 +10,13 @@ export default function EffortChart({ data }: Props) {
       <AreaChart data={data} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
         <defs>
           <linearGradient id="effortGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#8b2a2a" stopOpacity={0.3} />
-            <stop offset="100%" stopColor="#8b2a2a" stopOpacity={0.02} />
+            <stop offset="0%" stopColor="#8b2a2a" stopOpacity={0.35} />
+            <stop offset="40%" stopColor="#a63d2f" stopOpacity={0.15} />
+            <stop offset="100%" stopColor="#b8922e" stopOpacity={0.03} />
+          </linearGradient>
+          <linearGradient id="effortStroke" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="#8b2a2a" />
+            <stop offset="100%" stopColor="#b8922e" />
           </linearGradient>
         </defs>
         <CartesianGrid stroke="#e2d9c8" strokeDasharray="3 3" opacity={0.5} />
@@ -40,11 +45,11 @@ export default function EffortChart({ data }: Props) {
         <Area
           type="monotone"
           dataKey="effort"
-          stroke="#8b2a2a"
-          strokeWidth={2}
+          stroke="url(#effortStroke)"
+          strokeWidth={2.5}
           fill="url(#effortGrad)"
           dot={false}
-          activeDot={{ r: 3, fill: '#8b2a2a', strokeWidth: 0 }}
+          activeDot={{ r: 4, fill: '#8b2a2a', strokeWidth: 2, stroke: '#fffdf8' }}
         />
       </AreaChart>
     </ResponsiveContainer>

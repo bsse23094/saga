@@ -22,6 +22,15 @@ export default {
           gold:    '#b8922e',
           wheat:   '#c4a55a',
           steel:   '#5a6a7a',
+          // richer accent palette
+          ruby:    '#a62639',
+          jade:    '#1a7a4a',
+          amber:   '#d4921a',
+          bronze:  '#8a6832',
+          plum:    '#6b3a6b',
+          ocean:   '#2a5a8b',
+          copper:  '#b87333',
+          sand:    '#e8dcc8',
         },
       },
       fontFamily: {

@@ -116,6 +116,10 @@ Create `.env` with:
 ```bash
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Optional: override email verification redirect URL
+# Defaults to https://bsse23094.github.io/saga/ in production
+VITE_SUPABASE_EMAIL_REDIRECT_URL=https://bsse23094.github.io/saga/
 ```
 
 Optional:

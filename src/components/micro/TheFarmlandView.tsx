@@ -22,14 +22,20 @@ export default function TheFarmlandView() {
   return (
     <section>
       {/* Chapter banner */}
-      <div className="relative mb-6 py-5 px-6 rounded-xl bg-gradient-to-r from-saga-forest/[0.04] to-transparent border-l-2 border-saga-forest/20">
-        <div className="flex items-center gap-2 mb-1">
-          <Wheat size={13} strokeWidth={1.5} className="text-saga-forest/50" />
-          <span className="font-cinzel text-micro tracking-[0.25em] text-saga-forest/60 uppercase">Chapter II — The Farmland</span>
+      <div className="relative mb-4 sm:mb-6 py-3 sm:py-5 px-4 sm:px-6 rounded-xl overflow-hidden border border-saga-forest/10">
+        <div className="absolute inset-0 bg-gradient-to-r from-saga-forest/[0.08] via-saga-moss/[0.04] to-transparent" />
+        <div className="absolute top-0 right-0 w-24 h-24 bg-saga-forest/[0.03] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="relative">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-6 h-6 rounded-lg bg-saga-forest/10 flex items-center justify-center">
+              <Wheat size={13} strokeWidth={1.5} className="text-saga-forest" />
+            </div>
+            <span className="font-cinzel text-micro tracking-[0.25em] text-saga-forest/70 uppercase">Chapter II — The Farmland</span>
+          </div>
+          <p className="font-fell italic text-[13px] text-saga-caption leading-relaxed max-w-lg">
+            &ldquo;{getQuoteByCategory('farmland').text}&rdquo;
+          </p>
         </div>
-        <p className="font-fell italic text-[13px] text-saga-caption leading-relaxed max-w-lg">
-          &ldquo;{getQuoteByCategory('farmland').text}&rdquo;
-        </p>
       </div>
 
       {/* Header */}
@@ -50,18 +56,21 @@ export default function TheFarmlandView() {
 
       {/* Today's progress */}
       {total > 0 && (
-        <div className="s-card mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <span className="s-section-label">Today&apos;s Harvest</span>
-            <span className="font-mono text-xs text-saga-ink">{completedToday}/{total}</span>
-          </div>
-          <div className="s-progress-track">
-            <motion.div
-              className="s-progress-fill-forest"
-              initial={{ width: 0 }}
-              animate={{ width: `${total > 0 ? (completedToday / total) * 100 : 0}%` }}
-              transition={{ type: 'spring', damping: 20 }}
-            />
+        <div className="s-card mb-6 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-saga-forest/[0.03] to-transparent" />
+          <div className="relative">
+            <div className="flex items-center justify-between mb-3">
+              <span className="s-section-label text-saga-forest/70">Today&apos;s Harvest</span>
+              <span className="font-mono text-xs font-semibold text-saga-forest">{completedToday}/{total}</span>
+            </div>
+            <div className="s-progress-track">
+              <motion.div
+                className="s-progress-fill-forest"
+                initial={{ width: 0 }}
+                animate={{ width: `${total > 0 ? (completedToday / total) * 100 : 0}%` }}
+                transition={{ type: 'spring', damping: 20 }}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -127,8 +136,9 @@ export default function TheFarmlandView() {
                     {doneToday && <span className="s-badge-forest">DONE</span>}
                   </div>
                   {streak > 0 && (
-                    <span className="font-mono text-tiny text-saga-gold tracking-wide">
-                      {streak} day streak
+                    <span className="font-mono text-tiny tracking-wide">
+                      <span className="text-saga-gold">✧</span>{' '}
+                      <span className="text-saga-gold font-semibold">{streak} day streak</span>
                     </span>
                   )}
                 </div>
@@ -139,7 +149,7 @@ export default function TheFarmlandView() {
               </div>
 
               {/* 14-day trail */}
-              <div className="flex gap-1">
+              <div className="flex gap-0.5 sm:gap-1">
                 {days.map((day) => {
                   const done = !!habit.log[day];
                   const isToday = day === today;
@@ -148,9 +158,9 @@ export default function TheFarmlandView() {
                       key={day}
                       onClick={() => toggleHabit(habit.id, day)}
                       className={clsx(
-                        'flex-1 h-2.5 rounded-sm cursor-pointer transition-colors',
-                        isToday && 'ring-1 ring-saga-ink/15',
-                        done ? 'bg-saga-forest/50' : 'bg-saga-surface'
+                        'flex-1 h-3 sm:h-2.5 rounded-sm cursor-pointer transition-all',
+                        isToday && 'ring-1 ring-saga-ink/20 ring-offset-1 ring-offset-saga-card',
+                        done ? 'bg-saga-forest/60 shadow-sm' : 'bg-saga-surface hover:bg-saga-forest/15'
                       )}
                       whileHover={{ scale: 1.4 }}
                       title={day}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useSagaStore } from '../../store/store';
+import { useAuth } from '../../contexts/AuthContext';
 import { HABIT_ICONS } from '../../utils/habitIcons';
 
 interface Props {
@@ -10,13 +11,15 @@ interface Props {
 }
 
 export default function AddHabitModal({ open, onClose }: Props) {
+  const { user } = useAuth();
   const addHabit = useSagaStore((s) => s.addHabit);
   const [name, setName] = useState('');
   const [icon, setIcon] = useState('sprout');
 
   const handleAdd = () => {
     if (!name.trim()) return;
-    addHabit({ id: crypto.randomUUID(), name: name.trim(), icon, log: {} });
+    if (!user) return;
+    addHabit({ id: crypto.randomUUID(), name: name.trim(), icon }, user.id);
     setName('');
     setIcon('sprout');
     onClose();
@@ -40,7 +43,7 @@ export default function AddHabitModal({ open, onClose }: Props) {
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="s-modal max-w-sm p-6"
+              className="s-modal max-w-sm mx-4 p-5 sm:p-6"
               initial={{ scale: 0.95, y: 16 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 16 }}

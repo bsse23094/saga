@@ -62,14 +62,20 @@ export default function TheMountainView() {
   return (
     <section>
       {/* Chapter banner */}
-      <div className="relative mb-6 py-5 px-6 rounded-xl bg-gradient-to-r from-saga-steel/[0.04] to-transparent border-l-2 border-saga-steel/20">
-        <div className="flex items-center gap-2 mb-1">
-          <Compass size={13} strokeWidth={1.5} className="text-saga-steel/50" />
-          <span className="font-cinzel text-micro tracking-[0.25em] text-saga-steel/60 uppercase">Chapter III — The Mountain</span>
+      <div className="relative mb-4 sm:mb-6 py-3 sm:py-5 px-4 sm:px-6 rounded-xl overflow-hidden border border-saga-steel/10">
+        <div className="absolute inset-0 bg-gradient-to-r from-saga-steel/[0.08] via-saga-ocean/[0.04] to-transparent" />
+        <div className="absolute top-0 right-0 w-24 h-24 bg-saga-steel/[0.03] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="relative">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-6 h-6 rounded-lg bg-saga-steel/10 flex items-center justify-center">
+              <Compass size={13} strokeWidth={1.5} className="text-saga-steel" />
+            </div>
+            <span className="font-cinzel text-micro tracking-[0.25em] text-saga-steel/70 uppercase">Chapter III — The Mountain</span>
+          </div>
+          <p className="font-fell italic text-[13px] text-saga-caption leading-relaxed max-w-lg">
+            &ldquo;{getQuoteByCategory('ambition').text}&rdquo;
+          </p>
         </div>
-        <p className="font-fell italic text-[13px] text-saga-caption leading-relaxed max-w-lg">
-          &ldquo;{getQuoteByCategory('ambition').text}&rdquo;
-        </p>
       </div>
 
       {/* Header */}
@@ -79,7 +85,7 @@ export default function TheMountainView() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+      <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-4 mb-6 sm:mb-8">
         <StatCard icon={BookOpen} label="Journal Entries" value={totalEntries} color="crimson" />
         <StatCard icon={Sprout} label="Habits Completed" value={totalHabitDone} color="forest" />
         <StatCard icon={Flame} label="Current Streak" value={`${streak}d`} color="gold" />
@@ -87,21 +93,27 @@ export default function TheMountainView() {
       </div>
 
       {/* Heatmap */}
-      <div className="s-card mb-6">
-        <h3 className="s-section-label mb-4">{year} Contribution Map</h3>
-        <Heatmap data={heatmapData} />
+      <div className="s-card mb-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-saga-forest/[0.02] via-transparent to-saga-crimson/[0.02]" />
+        <div className="relative">
+          <h3 className="s-section-label mb-4">{year} Contribution Map</h3>
+          <Heatmap data={heatmapData} />
+        </div>
       </div>
 
       {/* Chart */}
-      <div className="s-card mb-8">
-        <h3 className="s-section-label mb-4">Cumulative Effort — Last 30 Days</h3>
-        <EffortChart data={last30} />
+      <div className="s-card mb-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-saga-crimson/[0.02] to-saga-gold/[0.02]" />
+        <div className="relative">
+          <h3 className="s-section-label mb-4">Cumulative Effort — Last 30 Days</h3>
+          <EffortChart data={last30} />
+        </div>
       </div>
 
       {/* Closing motif */}
       <div className="text-center py-6">
-        <div className="w-12 h-px bg-saga-border mx-auto mb-4" />
-        <p className="font-fell italic text-xs text-saga-faint/60 leading-relaxed max-w-sm mx-auto">
+        <div className="w-16 h-px bg-gradient-to-r from-transparent via-saga-crimson/30 to-transparent mx-auto mb-4" />
+        <p className="font-fell italic text-xs text-saga-caption/60 leading-relaxed max-w-sm mx-auto">
           &ldquo;The mountain doesn&apos;t move. But the man who climbs it changes.&rdquo;
         </p>
         <span className="font-cinzel text-micro tracking-[0.2em] text-saga-faint/40 block mt-1">

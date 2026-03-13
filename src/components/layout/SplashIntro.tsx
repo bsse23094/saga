@@ -68,8 +68,8 @@ export default function SplashIntro({ onEnter }: Props) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
-          <h1 className="font-cinzel text-4xl md:text-5xl tracking-[0.35em] text-saga-ink font-semibold select-none mb-1">
-            SAGA
+          <h1 className="font-cinzel text-3xl sm:text-4xl md:text-5xl tracking-[0.35em] font-semibold select-none mb-1">
+            <span className="bg-gradient-to-r from-saga-crimson via-saga-ember to-saga-gold bg-clip-text text-transparent">SAGA</span>
           </h1>
           <p className="font-cinzel text-tiny tracking-[0.3em] text-saga-faint uppercase">
             The Path of Self-Mastery
@@ -85,7 +85,7 @@ export default function SplashIntro({ onEnter }: Props) {
         />
 
         {/* Quote (animated swap) */}
-        <div className="min-h-24 sm:min-h-28 flex items-center">
+        <div className="min-h-20 sm:min-h-24 sm:min-h-28 flex items-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={quoteKey}
@@ -96,7 +96,7 @@ export default function SplashIntro({ onEnter }: Props) {
               className="flex flex-col items-center cursor-pointer select-none"
               onClick={cycleQuote}
             >
-              <p className="font-fell italic text-lg md:text-xl text-saga-body leading-relaxed max-w-md">
+              <p className="font-fell italic text-base sm:text-lg md:text-xl text-saga-body leading-relaxed max-w-md">
                 &ldquo;{quote.text}&rdquo;
               </p>
               <span className="font-cinzel text-micro tracking-[0.2em] text-saga-faint mt-3 uppercase">
@@ -110,9 +110,10 @@ export default function SplashIntro({ onEnter }: Props) {
         <motion.button
           onClick={onEnter}
           className="mt-10 font-cinzel text-small tracking-[0.2em] uppercase
-                     px-10 py-3.5 rounded-lg border border-saga-crimson/30
-                     text-saga-crimson hover:bg-saga-crimson hover:text-white
-                     cursor-pointer transition-all duration-300 select-none"
+                     px-10 py-3.5 rounded-lg border-2 border-saga-crimson/40
+                     text-saga-crimson hover:bg-saga-crimson hover:text-white hover:border-saga-crimson
+                     cursor-pointer transition-all duration-300 select-none
+                     shadow-[0_0_20px_rgba(139,42,42,0.1)] hover:shadow-[0_0_30px_rgba(139,42,42,0.2)]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}

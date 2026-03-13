@@ -24,7 +24,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   padding-left: env(safe-area-inset-left);
   padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
   -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none;
 }
 
 #root {
@@ -81,13 +84,16 @@ body::after {
   /* ── Cards ──────────────────────────────────────────────── */
 
   .s-card {
-    @apply bg-saga-card border border-saga-border rounded-xl p-5;
+    @apply bg-saga-card border border-saga-border rounded-xl p-4 sm:p-5
+           shadow-[0_1px_3px_rgba(44,36,23,0.04)];
   }
 
   .s-card-interactive {
-    @apply bg-saga-card border border-saga-border rounded-xl p-5
+    @apply bg-saga-card border border-saga-border rounded-xl p-4 sm:p-5
+           shadow-[0_1px_3px_rgba(44,36,23,0.04)]
            cursor-pointer transition-all duration-200
-           hover:shadow-md hover:border-saga-crimson/20;
+           hover:shadow-lg hover:border-saga-crimson/25
+           hover:-translate-y-0.5;
   }
 
   /* ── Buttons ────────────────────────────────────────────── */
@@ -95,7 +101,7 @@ body::after {
   .s-btn-crimson {
     @apply inline-flex items-center justify-center gap-2
            font-cinzel text-small tracking-[0.12em] uppercase
-           rounded-lg px-5 py-2.5
+           rounded-lg px-5 py-2.5 min-h-[44px]
            cursor-pointer select-none transition-colors duration-200
            disabled:opacity-30 disabled:cursor-not-allowed
            bg-saga-crimson text-white hover:bg-saga-crimson/90;
@@ -104,7 +110,7 @@ body::after {
   .s-btn-forest {
     @apply inline-flex items-center justify-center gap-2
            font-cinzel text-small tracking-[0.12em] uppercase
-           rounded-lg px-5 py-2.5
+           rounded-lg px-5 py-2.5 min-h-[44px]
            cursor-pointer select-none transition-colors duration-200
            disabled:opacity-30 disabled:cursor-not-allowed
            bg-saga-forest text-white hover:bg-saga-forest/90;
@@ -113,7 +119,7 @@ body::after {
   .s-btn-ghost {
     @apply inline-flex items-center justify-center gap-2
            font-cinzel text-small tracking-[0.12em] uppercase
-           rounded-lg px-5 py-2.5
+           rounded-lg px-5 py-2.5 min-h-[44px]
            cursor-pointer select-none transition-colors duration-200
            bg-transparent text-saga-caption
            hover:bg-saga-surface hover:text-saga-ink;
@@ -147,7 +153,7 @@ body::after {
   /* ── Typography ─────────────────────────────────────────── */
 
   .s-heading {
-    @apply font-cinzel text-xl text-saga-ink tracking-wide;
+    @apply font-cinzel text-lg sm:text-xl text-saga-ink tracking-wide;
   }
 
   .s-subtitle {
@@ -166,13 +172,13 @@ body::after {
 
   .s-tag {
     @apply inline-block px-2.5 py-0.5
-           bg-saga-surface border border-saga-border rounded-full
-           font-mono text-tiny tracking-wider text-saga-caption;
+           bg-saga-crimson/5 border border-saga-crimson/15 rounded-full
+           font-mono text-tiny tracking-wider text-saga-crimson/70;
   }
 
   .s-badge-forest {
-    @apply font-mono text-tiny bg-saga-forest/10 text-saga-forest
-           px-2 py-0.5 rounded-full tracking-wider;
+    @apply font-mono text-tiny bg-saga-forest/12 text-saga-forest
+           px-2 py-0.5 rounded-full tracking-wider font-semibold;
   }
 
   /* ── Overlays / Drawers / Modals ────────────────────────── */
@@ -182,9 +188,10 @@ body::after {
   }
 
   .s-drawer {
-    @apply fixed top-0 bottom-0 right-0 w-full max-w-lg
+    @apply fixed top-0 bottom-0 right-0 w-full sm:max-w-lg
            bg-saga-card border-l border-saga-border
            shadow-2xl z-50 flex flex-col;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   .s-modal {
@@ -193,12 +200,13 @@ body::after {
   }
 
   .s-overlay-header {
-    @apply flex items-center justify-between px-6 py-4
+    @apply flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4
            border-b border-saga-border;
   }
 
   .s-close-btn {
-    @apply p-1.5 rounded-lg
+    @apply p-2.5 rounded-lg min-w-[44px] min-h-[44px]
+           flex items-center justify-center
            text-saga-faint hover:text-saga-ink hover:bg-saga-surface
            cursor-pointer transition-colors;
   }
@@ -206,11 +214,13 @@ body::after {
   /* ── Progress ───────────────────────────────────────────── */
 
   .s-progress-track {
-    @apply w-full h-2 bg-saga-surface rounded-full overflow-hidden;
+    @apply w-full h-2.5 bg-saga-surface rounded-full overflow-hidden
+           shadow-inner;
   }
 
   .s-progress-fill-forest {
-    @apply h-full bg-saga-forest rounded-full;
+    @apply h-full rounded-full
+           bg-gradient-to-r from-saga-forest to-saga-moss;
   }
 }
 
@@ -237,3 +247,17 @@ body::after {
 .anim-float   { animation: float 25s ease-in-out infinite; }
 .anim-breathe { animation: breathe 4s ease-in-out infinite; }
 .anim-fade-up { animation: fadeUp 0.4s ease-out both; }
+
+/* ── Colorful gradient accents ── */
+.accent-glow-crimson {
+  background: linear-gradient(135deg, rgba(139,42,42,0.08), rgba(166,61,47,0.04), transparent);
+}
+.accent-glow-forest {
+  background: linear-gradient(135deg, rgba(46,107,58,0.08), rgba(74,138,86,0.04), transparent);
+}
+.accent-glow-gold {
+  background: linear-gradient(135deg, rgba(184,146,46,0.08), rgba(196,165,90,0.04), transparent);
+}
+.accent-glow-steel {
+  background: linear-gradient(135deg, rgba(90,106,122,0.08), rgba(90,106,122,0.04), transparent);
+}

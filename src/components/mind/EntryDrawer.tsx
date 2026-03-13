@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Save, Tag } from 'lucide-react';
 import { useSagaStore } from '../../store/store';
+import { useAuth } from '../../contexts/AuthContext';
 import type { JournalEntry } from '../../store/store';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function EntryDrawer({ open, onClose, existingEntry }: Props) {
+  const { user } = useAuth();
   const addEntry = useSagaStore((s) => s.addEntry);
   const [noiseText, setNoiseText] = useState('');
   const [pathText, setPathText] = useState('');
@@ -36,13 +38,14 @@ export default function EntryDrawer({ open, onClose, existingEntry }: Props) {
 
   const handleSave = () => {
     if (!noiseText.trim() && !pathText.trim()) return;
+    if (!user) return;
     addEntry({
       id: crypto.randomUUID(),
       timestamp: Date.now(),
       noiseText: noiseText.trim(),
       pathText: pathText.trim(),
       tags,
-    });
+    }, user.id);
     onClose();
   };
 
@@ -87,7 +90,7 @@ export default function EntryDrawer({ open, onClose, existingEntry }: Props) {
             </div>
 
             {/* Body */}
-            <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
+            <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 space-y-5 sm:space-y-6">
               <div>
                 <label className="s-section-label text-saga-crimson/70 mb-2 block">
                   The Noise — what&apos;s weighing on you?
@@ -147,7 +150,7 @@ export default function EntryDrawer({ open, onClose, existingEntry }: Props) {
 
             {/* Footer */}
             {!isViewMode && (
-              <div className="px-6 py-4 border-t border-saga-border">
+              <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-saga-border">
                 <motion.button
                   onClick={handleSave}
                   disabled={!noiseText.trim() && !pathText.trim()}

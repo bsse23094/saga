@@ -5,11 +5,11 @@ interface HeatmapProps {
 }
 
 const COLORS = [
-  'bg-saga-surface',       // 0 — empty
-  'bg-saga-wheat/30',      // 1 — light
-  'bg-saga-wheat/60',      // 2 — medium
-  'bg-saga-crimson/30',    // 3 — warm
-  'bg-saga-crimson/60',    // 4+ — hot
+  'bg-saga-surface',               // 0 — empty
+  'bg-saga-forest/20',             // 1 — light
+  'bg-saga-forest/40',             // 2 — medium  
+  'bg-saga-forest/65',             // 3 — warm
+  'bg-saga-crimson/70',            // 4+ — hot
 ];
 
 function getColor(v: number) {

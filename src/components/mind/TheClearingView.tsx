@@ -5,9 +5,11 @@ import { getQuoteByCategory } from '../../utils/quotes';
 import { useSagaStore } from '../../store/store';
 import type { JournalEntry } from '../../store/store';
 import { formatJournalDate } from '../../utils/dateUtils';
+import { useAuth } from '../../contexts/AuthContext';
 import EntryDrawer from './EntryDrawer';
 
 export default function TheClearingView() {
+  const { user } = useAuth();
   const entries = useSagaStore((s) => s.entries);
   const deleteEntry = useSagaStore((s) => s.deleteEntry);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -19,14 +21,20 @@ export default function TheClearingView() {
   return (
     <section>
       {/* Chapter banner */}
-      <div className="relative mb-6 py-5 px-6 rounded-xl bg-gradient-to-r from-saga-crimson/[0.04] to-transparent border-l-2 border-saga-crimson/20">
-        <div className="flex items-center gap-2 mb-1">
-          <Swords size={13} strokeWidth={1.5} className="text-saga-crimson/50" />
-          <span className="font-cinzel text-micro tracking-[0.25em] text-saga-crimson/60 uppercase">Chapter I — The Clearing</span>
+      <div className="relative mb-4 sm:mb-6 py-3 sm:py-5 px-4 sm:px-6 rounded-xl overflow-hidden border border-saga-crimson/10">
+        <div className="absolute inset-0 bg-gradient-to-r from-saga-crimson/[0.08] via-saga-ember/[0.04] to-transparent" />
+        <div className="absolute top-0 right-0 w-24 h-24 bg-saga-crimson/[0.03] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="relative">
+          <div className="flex items-center gap-2 mb-1">
+            <div className="w-6 h-6 rounded-lg bg-saga-crimson/10 flex items-center justify-center">
+              <Swords size={13} strokeWidth={1.5} className="text-saga-crimson" />
+            </div>
+            <span className="font-cinzel text-micro tracking-[0.25em] text-saga-crimson/70 uppercase">Chapter I — The Clearing</span>
+          </div>
+          <p className="font-fell italic text-[13px] text-saga-caption leading-relaxed max-w-lg">
+            &ldquo;{getQuoteByCategory('warrior').text}&rdquo;
+          </p>
         </div>
-        <p className="font-fell italic text-[13px] text-saga-caption leading-relaxed max-w-lg">
-          &ldquo;{getQuoteByCategory('warrior').text}&rdquo;
-        </p>
       </div>
 
       {/* Header */}
@@ -88,13 +96,13 @@ export default function TheClearingView() {
                   {/* Noise | Path columns */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5">
                     <div>
-                      <span className="s-section-label text-saga-crimson/60 mb-1 block">Noise</span>
+                      <span className="s-section-label text-saga-crimson/70 mb-1 block">Noise</span>
                       <p className="font-fell text-[13px] text-saga-body leading-relaxed line-clamp-3">
                         {entry.noiseText || <span className="italic text-saga-faint">—</span>}
                       </p>
                     </div>
                     <div>
-                      <span className="s-section-label text-saga-forest/60 mb-1 block">Path</span>
+                      <span className="s-section-label text-saga-forest/70 mb-1 block">Path</span>
                       <p className="font-fell text-[13px] text-saga-body leading-relaxed line-clamp-3">
                         {entry.pathText || <span className="italic text-saga-faint">—</span>}
                       </p>
@@ -114,7 +122,7 @@ export default function TheClearingView() {
                 {/* Delete */}
                 <button
                   onClick={(e) => { e.stopPropagation(); deleteEntry(entry.id); }}
-                  className="sm:opacity-0 sm:group-hover:opacity-100 p-1.5 rounded-lg text-saga-faint hover:text-saga-crimson hover:bg-saga-crimson/5 cursor-pointer transition-all"
+                  className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-2 rounded-lg text-saga-faint hover:text-saga-crimson hover:bg-saga-crimson/5 cursor-pointer transition-all min-w-[44px] min-h-[44px] flex items-center justify-center"
                 >
                   <Trash2 size={14} />
                 </button>
