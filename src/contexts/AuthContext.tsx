@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import type { User, Session } from '@supabase/supabase-js';
+import type { User, Session, EmailOtpType } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import type { Profile } from '../lib/database.types';
 
@@ -29,9 +29,49 @@ const getEmailRedirectTo = () => {
   return window.location.origin;
 };
 
-const isSignupVerificationRedirect = () => {
-  const href = window.location.href.toLowerCase();
-  return /(^|[?#&])type=signup([&#]|$)/.test(href);
+const getAuthParamsFromUrl = () => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+
+  const hash = url.hash.startsWith('#') ? url.hash.slice(1) : url.hash;
+  if (!hash) return params;
+
+  if (hash.includes('?')) {
+    const hashQuery = hash.slice(hash.indexOf('?') + 1);
+    const hashParams = new URLSearchParams(hashQuery);
+    hashParams.forEach((value, key) => params.set(key, value));
+  } else {
+    const hashParams = new URLSearchParams(hash);
+    hashParams.forEach((value, key) => params.set(key, value));
+  }
+
+  return params;
+};
+
+const stripAuthParamsFromUrl = () => {
+  const url = new URL(window.location.href);
+  const params = new URLSearchParams(url.search);
+  const keysToRemove = ['code', 'token_hash', 'type', 'access_token', 'refresh_token', 'expires_in', 'expires_at'];
+  keysToRemove.forEach((key) => params.delete(key));
+  url.search = params.toString() ? `?${params.toString()}` : '';
+
+  const hash = url.hash.startsWith('#') ? url.hash.slice(1) : url.hash;
+  if (hash) {
+    if (hash.includes('?')) {
+      const [hashPath, hashQuery] = hash.split('?');
+      const hashParams = new URLSearchParams(hashQuery);
+      keysToRemove.forEach((key) => hashParams.delete(key));
+      const nextHashQuery = hashParams.toString();
+      url.hash = nextHashQuery ? `#${hashPath}?${nextHashQuery}` : `#${hashPath}`;
+    } else {
+      const hashParams = new URLSearchParams(hash);
+      keysToRemove.forEach((key) => hashParams.delete(key));
+      const nextHash = hashParams.toString();
+      url.hash = nextHash ? `#${nextHash}` : '';
+    }
+  }
+
+  window.history.replaceState({}, document.title, url.toString());
 };
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -55,18 +95,45 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   useEffect(() => {
-    const cameFromSignupVerification = isSignupVerificationRedirect();
+    let isMounted = true;
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
+    const initializeAuth = async () => {
+      const authParams = getAuthParamsFromUrl();
+      const code = authParams.get('code');
+      const tokenHash = authParams.get('token_hash');
+      const otpType = authParams.get('type');
+      let verifiedInCallback = false;
+
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        if (!error && (otpType === 'signup' || otpType === 'email')) {
+          verifiedInCallback = true;
+        }
+      } else if (tokenHash && otpType) {
+        const { error } = await supabase.auth.verifyOtp({
+          token_hash: tokenHash,
+          type: otpType as EmailOtpType,
+        });
+        if (!error && (otpType === 'signup' || otpType === 'email')) {
+          verifiedInCallback = true;
+        }
+      }
+
+      // Get initial session
+      const { data: { session: s } } = await supabase.auth.getSession();
+      if (!isMounted) return;
+
       setSession(s);
       setUser(s?.user ?? null);
-      if (cameFromSignupVerification && s?.user?.email_confirmed_at) {
+      if ((verifiedInCallback || otpType === 'signup') && s?.user?.email_confirmed_at) {
         setEmailJustVerified(true);
       }
       if (s?.user) fetchProfile(s.user.id);
       setLoading(false);
-    });
+      stripAuthParamsFromUrl();
+    };
+
+    initializeAuth();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -82,7 +149,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, username: string, displayName: string) => {
