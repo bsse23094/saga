@@ -18,15 +18,6 @@ SAGA is a self-mastery web app inspired by the growth arcs of **Thorfinn** and *
 
 ---
 
-## 🖼️ Character Visuals
-
-Original, repo-local visuals inspired by the themes (not manga panels/art):
-
-| Thorfinn-inspired | Musashi-inspired |
-|---|---|
-| ![Thorfinn-inspired visual](docs/visuals/thorfinn.svg) | ![Musashi-inspired visual](docs/visuals/musashi.svg) |
-
----
 
 ## 📖 The Four Chapters
 
